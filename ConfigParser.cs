@@ -219,6 +219,22 @@ public class ConfigParser
     }
 
     /**
+     * Get By Index (use only if you don't modify any value)
+     * 
+     * @param int index
+     * @return string
+     */
+    public string GetByIndex(int index, string defaultVal = "")
+    {
+        if (index >= 0)
+        {
+            return entries[index].value;
+        }
+
+        return defaultVal;
+    }
+
+    /**
 	 * Set Entry
 	 * 
 	 * Create Or Change an entry
