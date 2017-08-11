@@ -36,7 +36,11 @@ public class FPSCounter : MonoBehaviour {
             if (fpsCounterTime >= fpsCounterTimeMax)
             {
                 float fps = (Mathf.Floor(fpsCounterValue / fpsCounterTimeMax));
-                fpsCounterText.text = fps.ToString();
+
+                if (fpsCounterText != null)
+                {
+                    fpsCounterText.text = fps.ToString();
+                }
 
                 // Checks Low FPS
                 if (minFPSValue > fps && OnFPSDropDown != null)
