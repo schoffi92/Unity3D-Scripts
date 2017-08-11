@@ -16,6 +16,14 @@ public class FPSCounter : MonoBehaviour {
 
     public Text fpsCounterText;
 
+    /**
+     * Variables For Low FPS Event
+     */
+    public float minFPSValue = 60f;
+
+    public delegate void FPSDropDown(float fps);
+    public FPSDropDown OnFPSDropDown;
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,7 +35,14 @@ public class FPSCounter : MonoBehaviour {
 
             if (fpsCounterTime >= fpsCounterTimeMax)
             {
-                fpsCounterText.text = (Mathf.Floor(fpsCounterValue / fpsCounterTimeMax)).ToString();
+                float fps = (Mathf.Floor(fpsCounterValue / fpsCounterTimeMax));
+                fpsCounterText.text = fps.ToString();
+
+                // Checks Low FPS
+                if (minFPSValue > fps && OnFPSDropDown != null)
+                {
+                    OnFPSDropDown(fps);
+                }
 
                 fpsCounterTime -= fpsCounterTimeMax;
                 fpsCounterValue = 0f;
