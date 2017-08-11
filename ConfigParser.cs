@@ -40,11 +40,11 @@ public class ConfigParser
     /**
      * Changed Value Event System
      */
-    public delegate void ChangedValue(string key, string newValue, string oldValue);
-    public static event ChangedValue OnChangedValue;
+    public delegate void ChangedValue(string section, string key, string newValue, string oldValue);
+    public ChangedValue OnChangedValue;
 
     public delegate void ClearValues();
-    public static event ClearValues OnClearValues;
+    public ClearValues OnClearValues;
 
     /**
 	 * Default Section 
@@ -256,7 +256,7 @@ public class ConfigParser
         // Send Change Event if it is enabled
         if (OnChangedValue != null)
         {
-            OnChangedValue(key, value, (index < 0 ? "" : entries[index].value));
+            OnChangedValue(section, key, value, (index < 0 ? "" : entries[index].value));
         }
 
         // Entry Exists
