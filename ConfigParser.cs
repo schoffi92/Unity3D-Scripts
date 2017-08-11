@@ -1,49 +1,50 @@
-/**
- * Created by István Schoffhauzer
- * 
- */
-
-
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
-
-public struct ConfigEntry
-{
-
-    public string section;
-
-    public string key;
-
-    public string value;
-
-    /**
-	 * ConfigEntry
-	 * 
-	 * @param string section
-	 * @param string key
-	 * @param string value
-	 */
-    public ConfigEntry(string key, string value = "", string section = "")
-    {
-        this.section = section.ToLower().Trim();
-        this.key = key.ToLower().Trim();
-        this.value = value;
-    }
-
-    /**
-	 * Set Value
-	 * 
-	 * @param string value
-	 */
-    public void SetValue(string value)
-    {
-        this.value = value;
-    }
-}
 
 public class ConfigParser
 {
+    public struct ConfigEntry
+    {
+
+        public string section;
+
+        public string key;
+
+        public string value;
+
+        /**
+         * ConfigEntry
+         * 
+         * @param string section
+         * @param string key
+         * @param string value
+         */
+        public ConfigEntry(string key, string value = "", string section = "")
+        {
+            this.section = section.ToLower().Trim();
+            this.key = key.ToLower().Trim();
+            this.value = value;
+        }
+
+        /**
+         * Set Value
+         * 
+         * @param string value
+         */
+        public void SetValue(string value)
+        {
+            this.value = value;
+        }
+    }
+
+    /**
+     * Changed Value Event System
+     */
+    public delegate void ChangedValue(string key, string newValue, string oldValue);
+    public static event ChangedValue OnChangedValue;
+
+    public delegate void ClearValues();
+    public static event ClearValues OnClearValues;
 
     /**
 	 * Default Section 
@@ -84,6 +85,12 @@ public class ConfigParser
 	 */
     public void Clear()
     {
+        if (OnClearValues != null)
+        {
+            OnClearValues();
+        }
+
+
         entries.Clear();
     }
 
@@ -246,6 +253,12 @@ public class ConfigParser
     {
         int index = GetIndex(key, section);
 
+        // Send Change Event if it is enabled
+        if (OnChangedValue != null)
+        {
+            OnChangedValue(key, value, (index < 0 ? "" : entries[index].value));
+        }
+
         // Entry Exists
         if (index >= 0)
         {
@@ -299,4 +312,6 @@ public class ConfigParser
 
         return result;
     }
+
+    
 }
