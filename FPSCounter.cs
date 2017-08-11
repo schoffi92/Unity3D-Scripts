@@ -22,7 +22,7 @@ public class FPSCounter : MonoBehaviour {
     public float minFPSValue = 60f;
 
     public delegate void FPSDropDown(float fps);
-    public FPSDropDown OnFPSDropDown;
+    public event FPSDropDown OnFPSDropDown;
 
 	
 	// Update is called once per frame

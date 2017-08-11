@@ -41,10 +41,10 @@ public class ConfigParser
      * Changed Value Event System
      */
     public delegate void ChangedValue(string section, string key, string newValue, string oldValue);
-    public ChangedValue OnChangedValue;
+    public event ChangedValue OnChangedValue;
 
     public delegate void ClearValues();
-    public ClearValues OnClearValues;
+    public event ClearValues OnClearValues;
 
     /**
 	 * Default Section 
