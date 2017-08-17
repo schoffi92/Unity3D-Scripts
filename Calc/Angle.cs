@@ -1,0 +1,95 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System;
+
+namespace Calc
+{
+    public class Angle
+    {
+        public struct Rotation
+        {
+            public float alpha;
+            public float times;
+
+            public float GetFullAngle()
+            {
+                return alpha + (360 * times);
+            }
+
+            public Rotation(float r)
+            {
+                this.alpha = Truncate(r);
+                this.times = GetOverRotationCount(r);
+            }
+        }
+
+        /**
+         * Get Over Rotation Count
+         * 
+         * This function will return with the number of how many times we rotated 360 degree
+         * 
+         * @param float r
+         * @return float
+         */
+        public static float GetOverRotationCount(float r)
+        {
+            return Convert.ToSingle(Math.Floor(r / 360));
+        }
+
+        /**
+         * Truncate angle to (-360,+360) degree format
+         * 
+         * @param float r
+         * @return float
+         */
+        public static float Truncate(float r)
+        {
+            if (Math.Abs(r) <= 360)
+            {
+                return r;
+            }
+
+            float times = GetOverRotationCount( r );
+            return r - (360 * times);
+        }
+
+        public static float To90(flat)
+
+        /**
+         * Convert Angle to (-180,180) degree format
+         * 
+         * @param flaot r
+         * @return float
+         */
+        public static float To180(float r)
+        {
+            if (r < -180)
+            {
+                return Truncate(r) + 360;
+            }
+
+            if (r > 180)
+            {
+                return Truncate(r) - 360;
+            }
+
+            return Truncate(r);
+        }
+
+        /**
+         * Convert Angle to (0,360) degree format
+         * 
+         * @param float r
+         * @return float
+         */
+        public static float To360(float r)
+        {
+            if (r < 0)
+            {
+                return Truncate(r) + 360;
+            }
+
+            return Truncate(r);
+        }
+    }
+}
