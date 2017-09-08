@@ -126,7 +126,10 @@ namespace Calc
          */
         public static float GetMaxRotation(float from, float to)
         {
-            return 360 - GetMinRotation(from, to);
+            float min = GetMinRotation(from, to);
+            if (min >= 0) return 360 - min;
+            
+            return 360 + min;
         }
     }
 }
