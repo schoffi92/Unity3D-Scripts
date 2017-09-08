@@ -1,12 +1,19 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class FPSCounter : MonoBehaviour {
 
+    public const string PLAYERPREF_FPS_KEY = "dbg_fps";
+	
     // FPS Counter
-    public bool fpsCounterEnabled = false;
+	public bool loadFPSSettings = true;
+	
+    public bool fpsCounterEnabled = true;
+	
+	public bool fpsDisplayEnabled = false;
 
     public float fpsCounterTime = 0f;
 
@@ -21,12 +28,34 @@ public class FPSCounter : MonoBehaviour {
      */
     public float minFPSValue = 60f;
 
-    public delegate void FPSDropDown(float fps);
-    public event FPSDropDown OnFPSDropDown;
+    public UnityEvent onFPSDropDown;
 
-	
-	// Update is called once per frame
-	void Update () {
+    private void Start()
+    {
+		if (fpsCounterText != null)
+		{
+			fpsCounterText.text = "";
+		}
+		
+		if (loadFPSSettings && PlayerPrefs.HasKey(PLAYERPREF_FPS_KEY))
+		{
+			fpsDisplayEnabled = (PlayerPrefs.GetInt(PLAYERPREF_FPS_KEY) == 1);
+		}
+    }
+
+    public void ToggleFPSDisplay()
+    {
+		PlayerPrefs.SetInt(PLAYERPREF_FPS_KEY, (!fpsDisplayEnabled ? 1 : 0));
+        fpsDisplayEnabled = !fpsDisplayEnabled;
+		
+		if (fpsCounterText != null)
+		{
+        	fpsCounterText.text = "";
+		}
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         if (fpsCounterEnabled)
         {
@@ -37,15 +66,15 @@ public class FPSCounter : MonoBehaviour {
             {
                 float fps = (Mathf.Floor(fpsCounterValue / fpsCounterTimeMax));
 
-                if (fpsCounterText != null)
+                if (fpsCounterText != null && fpsDisplayEnabled)
                 {
                     fpsCounterText.text = fps.ToString();
                 }
 
                 // Checks Low FPS
-                if (minFPSValue > fps && OnFPSDropDown != null)
+                if (minFPSValue > fps)
                 {
-                    OnFPSDropDown(fps);
+                    onFPSDropDown.Invoke();
                 }
 
                 fpsCounterTime -= fpsCounterTimeMax;
