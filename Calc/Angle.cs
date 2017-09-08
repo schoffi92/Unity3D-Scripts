@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -49,11 +49,9 @@ namespace Calc
                 return r;
             }
 
-            float times = GetOverRotationCount( r );
+            float times = GetOverRotationCount(r);
             return r - (360 * times);
         }
-
-        public static float To90(flat)
 
         /**
          * Convert Angle to (-180,180) degree format
@@ -90,6 +88,32 @@ namespace Calc
             }
 
             return Truncate(r);
+        }
+
+        /**
+         * Get Smallest Rotation To Reach Rotation
+         * The arguments cannot be bigger than 360 and smaller than 0
+         * 
+         * @param float from 
+         * @param float to
+         * @return float
+         */
+        public static float GetMinRotation(float from, float to)
+        {
+            from = To360(from);
+            to = To360(to);
+
+            if (to > from && to - from > 180)
+            {
+                return to - (360 - from);
+            }
+
+            if (to < from && to - from < -180)
+            {
+                return to + 360 - from;
+            }
+
+            return to - from;
         }
     }
 }
