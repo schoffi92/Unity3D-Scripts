@@ -115,5 +115,18 @@ namespace Calc
 
             return to - from;
         }
+        
+        /**
+         * Get Largest Rotation To Reach Rotation
+         * The arguments cannot be bigger than 360 and smaller than 0
+         * 
+         * @param float from 
+         * @param float to
+         * @return float
+         */
+        public static float GetMaxRotation(float from, float to)
+        {
+            return 360 - GetMinRotation(from, to);
+        }
     }
 }
