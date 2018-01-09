@@ -1,3 +1,7 @@
+# This is an old branch and it will be rewrited
+
+The branches will be used for versioning and master won't be used anymore.
+
 # Unity3D-Scripts
 
 This project will contain some useful scripts / functions. 
